@@ -3,4 +3,10 @@
     <string name="my_pantry">My Pantry</string>
     <string name="add_ingredient">Add Ingredients</string>
     <string name="empty_pantry_message">No pantry items yet. Add your first ingredient.</string>
+    <string name="add_ingredient_title">Add Ingredient</string>
+    <string name="ingredient_name_hint">Ingredient name</string>
+    <string name="quantity_hint">Quantity</string>
+    <string name="unit_hint">Unit, for example pieces or kg</string>
+    <string name="expiry_date_hint">Expiry date (optional)</string>
+    <string name="save_ingredient">Save Ingredient</string>
 </resources>
