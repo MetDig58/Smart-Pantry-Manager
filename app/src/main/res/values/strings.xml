@@ -14,4 +14,6 @@
     <string name="quantity_invalid">Quantity must be greater than zero.</string>
     <string name="unit_required">Please enter a unit.</string>
     <string name="form_valid_message">The ingredient details are valid.</string>
+    <string name="ingredient_saved">Ingredient saved successfully.</string>
+    <string name="ingredient_save_failed">Could not save the ingredient. Please try again.</string>
 </resources>
