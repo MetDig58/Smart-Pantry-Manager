@@ -1,6 +1,5 @@
 package com.example.smartpantrymanager;
 
-import android.icu.text.NumberFormat;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.Button;
@@ -115,11 +114,9 @@ public class AddIngredientActivity extends AppCompatActivity {
 
                     finish();
         })
-                .addOnFailureListener(exception -> {
-                    Toast.makeText(this,
-                            R.string.ingredient_save_failed,
-                            Toast.LENGTH_SHORT
-                    ).show();
-                });
+                .addOnFailureListener(exception -> Toast.makeText(this,
+                        R.string.ingredient_save_failed,
+                        Toast.LENGTH_SHORT
+                ).show());
     }
 }

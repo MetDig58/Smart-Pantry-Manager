@@ -9,6 +9,10 @@
     <string name="unit_hint">Unit, for example pieces or kg</string>
     <string name="expiry_date_hint">Expiry date (optional)</string>
     <string name="save_ingredient">Save Ingredient</string>
+    <string name="pantry_item_name_preview">Ingredient Name</string>
+    <string name="pantry_item_quantity_preview">Quantity: 0 pieces</string>
+    <string name="pantry_item_expiry_preview">Expiry: Not provided</string>
+    <string name="pantry_load_failed">Could not load pantry items. Please check your connection.</string>
     <string name="ingredient_name_required">Please enter an ingredient name.</string>
     <string name="quantity_required">Please enter a quantity.</string>
     <string name="quantity_invalid">Quantity must be greater than zero.</string>
@@ -16,4 +20,5 @@
     <string name="form_valid_message">The ingredient details are valid.</string>
     <string name="ingredient_saved">Ingredient saved successfully.</string>
     <string name="ingredient_save_failed">Could not save the ingredient. Please try again.</string>
+    <string name="expiry_not_provided">Expiry: Not provided</string>
 </resources>
