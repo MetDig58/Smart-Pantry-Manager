@@ -9,4 +9,9 @@
     <string name="unit_hint">Unit, for example pieces or kg</string>
     <string name="expiry_date_hint">Expiry date (optional)</string>
     <string name="save_ingredient">Save Ingredient</string>
+    <string name="ingredient_name_required">Please enter an ingredient name.</string>
+    <string name="quantity_required">Please enter a quantity.</string>
+    <string name="quantity_invalid">Quantity must be greater than zero.</string>
+    <string name="unit_required">Please enter a unit.</string>
+    <string name="form_valid_message">The ingredient details are valid.</string>
 </resources>
