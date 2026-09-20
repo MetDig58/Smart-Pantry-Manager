@@ -5,6 +5,7 @@ import android.widget.EditText;
 import android.widget.Button;
 import android.text.TextUtils;
 import android.widget.Toast;
+import android.widget.TextView;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -18,11 +19,33 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class AddIngredientActivity extends AppCompatActivity {
+    public static final String EXTRA_EDIT_MODE =
+            "com.example.smartpantrymanager.EXTRA_EDIT_MODE";
+
+    public static final String EXTRA_ITEM_ID =
+            "com.example.smartpantrymanager.EXTRA_ITEM_ID";
+
+    public static final String EXTRA_ITEM_NAME =
+            "com.example.smartpantrymanager.EXTRA_ITEM_NAME";
+
+    public static final String EXTRA_ITEM_QUANTITY =
+            "com.example.smartpantrymanager.EXTRA_ITEM_QUANTITY";
+
+    public static final String EXTRA_ITEM_UNIT =
+            "com.example.smartpantrymanager.EXTRA_ITEM_UNIT";
+
+    public static final String EXTRA_ITEM_EXPIRY_DATE =
+            "com.example.smartpantrymanager.EXTRA_ITEM_EXPIRY_DATE";
+
     private EditText ingredientNameInput;
+    private boolean editMode;
+    private String editingItemId;
     private EditText quantityInput;
     private EditText unitInput;
     private EditText expiryDateInput;
     private  FirebaseFirestore firestore;
+    private TextView formTitle;
+    private Button saveIngredientButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +64,35 @@ public class AddIngredientActivity extends AppCompatActivity {
         quantityInput = findViewById(R.id.editTextQuantity);
         unitInput = findViewById(R.id.editTextUnit);
         expiryDateInput = findViewById(R.id.editTextExpiryDate);
+        formTitle = findViewById(R.id.textAddIngredientTitle);
+        saveIngredientButton = findViewById(R.id.buttonSaveIngredient);
 
-        Button saveIngredientsButton = findViewById(R.id.buttonSaveIngredient);
+        editMode = getIntent().getBooleanExtra(EXTRA_EDIT_MODE, false);
 
-        saveIngredientsButton.setOnClickListener(view -> validateForm());
+        if (editMode) {
+            editingItemId = getIntent().getStringExtra(EXTRA_ITEM_ID);
+
+            ingredientNameInput.setText(
+                    getIntent().getStringExtra(EXTRA_ITEM_NAME)
+            );
+
+            double quantity = getIntent().getDoubleExtra(EXTRA_ITEM_QUANTITY, 0.0);
+            quantityInput.setText(String.valueOf(quantity));
+
+            unitInput.setText(
+                    getIntent().getStringExtra(EXTRA_ITEM_UNIT)
+            );
+
+            expiryDateInput.setText(
+                    getIntent().getStringExtra(EXTRA_ITEM_EXPIRY_DATE)
+            );
+
+            formTitle.setText(R.string.edit_ingredient_title);
+            saveIngredientButton.setText(R.string.update_ingredient);
+        }
+
+
+        saveIngredientButton.setOnClickListener(view -> validateForm());
     }
 
     private void validateForm() {
@@ -85,18 +133,28 @@ public class AddIngredientActivity extends AppCompatActivity {
         }
 
         if (isValid) {
-            saveIngredientToFirestore(
-                    ingredientName,
-                    quantityText,
-                    unit,
-                    expiryDateInput.getText().toString().trim()
-            );
+            double quantity = Double.parseDouble(quantityText);
+            String expiryDate = expiryDateInput.getText().toString().trim();
+
+            if (editMode) {
+                updateIngredientInFirestore(
+                        ingredientName,
+                        quantity,
+                        unit,
+                        expiryDate
+                );
+            } else {
+                saveIngredientToFirestore(
+                        ingredientName,
+                        quantity,
+                        unit,
+                        expiryDate
+                );
+            }
         }
     }
 
-    private void saveIngredientToFirestore(String ingredientName, String quantityText, String unit, String expiryDate) {
-        double quantity = Double.parseDouble(quantityText);
-
+    private void saveIngredientToFirestore(String ingredientName, double quantity, String unit, String expiryDate) {
         Map<String, Object> pantryItem = new HashMap<>();
         pantryItem.put("name", ingredientName);
         pantryItem.put("quantity", quantity);
@@ -118,5 +176,42 @@ public class AddIngredientActivity extends AppCompatActivity {
                         R.string.ingredient_save_failed,
                         Toast.LENGTH_SHORT
                 ).show());
+    }
+
+    private void updateIngredientInFirestore(String ingredientName, double quantity, String unit, String expiryDate) {
+        if (editingItemId == null || editingItemId.trim().isEmpty()) {
+            Toast.makeText(
+                    this,
+                    R.string.ingredient_update_failed,
+                    Toast.LENGTH_LONG
+            ).show();
+            return;
+        }
+
+        Map<String, Object> pantryItem = new HashMap<>();
+        pantryItem.put("name", ingredientName);
+        pantryItem.put("quantity", quantity);
+        pantryItem.put("unit", unit);
+        pantryItem.put("expiryDate", expiryDate);
+
+        firestore.collection("pantryItems")
+                .document(editingItemId)
+                .update(pantryItem)
+                .addOnSuccessListener(unused -> {
+                    Toast.makeText(
+                            this,
+                            R.string.ingredient_updated,
+                            Toast.LENGTH_SHORT
+                    ).show();
+
+                    finish();
+                })
+                .addOnFailureListener(exception -> {
+                    Toast.makeText(
+                            this,
+                            R.string.ingredient_update_failed,
+                            Toast.LENGTH_LONG
+                    ).show();
+                });
     }
 }

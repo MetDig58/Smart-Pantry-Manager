@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onEditClick(PantryItem pantryItem) {
-                showEditMessage(pantryItem);
+                openEditIngredientScreen(pantryItem);
             }
         });
 
@@ -146,12 +146,17 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    private void showEditMessage(PantryItem pantryItem) {
-        Toast.makeText(
-                this,
-                "Edit selected for: " + pantryItem.getName(),
-                Toast.LENGTH_SHORT
-        ).show();
+    private void openEditIngredientScreen(PantryItem pantryItem) {
+        Intent intent = new Intent(MainActivity.this, AddIngredientActivity.class);
+
+        intent.putExtra(AddIngredientActivity.EXTRA_EDIT_MODE, true);
+        intent.putExtra(AddIngredientActivity.EXTRA_ITEM_ID, pantryItem.getId());
+        intent.putExtra(AddIngredientActivity.EXTRA_ITEM_NAME, pantryItem.getName());
+        intent.putExtra(AddIngredientActivity.EXTRA_ITEM_QUANTITY, pantryItem.getQuantity());
+        intent.putExtra(AddIngredientActivity.EXTRA_ITEM_UNIT, pantryItem.getUnit());
+        intent.putExtra(AddIngredientActivity.EXTRA_ITEM_EXPIRY_DATE, pantryItem.getExpiryDate());
+
+        startActivity(intent);
     }
 
     @Override

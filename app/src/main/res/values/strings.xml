@@ -4,6 +4,8 @@
     <string name="add_ingredient">Add Ingredients</string>
     <string name="empty_pantry_message">No pantry items yet. Add your first ingredient.</string>
     <string name="add_ingredient_title">Add Ingredient</string>
+    <string name="edit_ingredient_title">Edit Ingredient</string>
+    <string name="update_ingredient">Update Ingredient</string>
     <string name="ingredient_name_hint">Ingredient name</string>
     <string name="quantity_hint">Quantity</string>
     <string name="delete_ingredient">Delete</string>
@@ -12,6 +14,8 @@
     <string name="unit_hint">Unit, for example pieces or kg</string>
     <string name="expiry_date_hint">Expiry date (optional)</string>
     <string name="save_ingredient">Save Ingredient</string>
+    <string name="ingredient_updated">Ingredient updated successfully.</string>
+    <string name="ingredient_update_failed">Could not update the ingredient. Please try again.</string>
     <string name="pantry_item_name_preview">Ingredient Name</string>
     <string name="pantry_item_quantity_preview">Quantity: 0 pieces</string>
     <string name="pantry_item_expiry_preview">Expiry: Not provided</string>
