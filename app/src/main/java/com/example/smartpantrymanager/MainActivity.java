@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         pantryRecyclerView = findViewById(R.id.pantryRecyclerView);
         emptyPantryText = findViewById(R.id.textEmptyPantry);
 
-        pantryAdapter = new PantryAdapter();
+        pantryAdapter = new PantryAdapter(this::deletePantryItem);
 
         pantryRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         pantryRecyclerView.setAdapter(pantryAdapter);
@@ -107,6 +107,35 @@ public class MainActivity extends AppCompatActivity {
             pantryRecyclerView.setVisibility(View.GONE);
             emptyPantryText.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void deletePantryItem(PantryItem pantryItem) {
+        if (pantryItem.getId() == null || pantryItem.getId().isEmpty())  {
+            Toast.makeText(
+                    this,
+                    R.string.ingredient_delete_failed,
+                    Toast.LENGTH_LONG
+            ).show();
+            return;
+        }
+
+        firestore.collection("pantryItems")
+                .document(pantryItem.getId())
+                .delete()
+                .addOnSuccessListener(unused -> {
+                    Toast.makeText(
+                            this,
+                            R.string.ingredient_deleted,
+                            Toast.LENGTH_SHORT
+                    ).show();
+                })
+                .addOnFailureListener(exception -> {
+                    Toast.makeText(
+                            this,
+                            R.string.ingredient_delete_failed,
+                            Toast.LENGTH_LONG
+                    ).show();
+                });
     }
 
     @Override

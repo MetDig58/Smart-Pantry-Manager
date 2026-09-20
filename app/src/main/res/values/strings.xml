@@ -6,6 +6,9 @@
     <string name="add_ingredient_title">Add Ingredient</string>
     <string name="ingredient_name_hint">Ingredient name</string>
     <string name="quantity_hint">Quantity</string>
+    <string name="delete_ingredient">Delete</string>
+    <string name="ingredient_deleted">Ingredient deleted.</string>
+    <string name="ingredient_delete_failed">Could not delete the ingredient. Please try again.</string>
     <string name="unit_hint">Unit, for example pieces or kg</string>
     <string name="expiry_date_hint">Expiry date (optional)</string>
     <string name="save_ingredient">Save Ingredient</string>
