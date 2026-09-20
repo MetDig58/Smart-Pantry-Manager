@@ -8,7 +8,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -18,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +45,17 @@ public class MainActivity extends AppCompatActivity {
         pantryRecyclerView = findViewById(R.id.pantryRecyclerView);
         emptyPantryText = findViewById(R.id.textEmptyPantry);
 
-        pantryAdapter = new PantryAdapter(this::deletePantryItem);
+        pantryAdapter = new PantryAdapter(new PantryAdapter.OnPantryItemActionListener() {
+            @Override
+            public void onDeleteClick(PantryItem pantryItem) {
+                deletePantryItem(pantryItem);
+            }
+
+            @Override
+            public void onEditClick(PantryItem pantryItem) {
+                showEditMessage(pantryItem);
+            }
+        });
 
         pantryRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         pantryRecyclerView.setAdapter(pantryAdapter);
@@ -136,6 +144,14 @@ public class MainActivity extends AppCompatActivity {
                             Toast.LENGTH_LONG
                     ).show();
                 });
+    }
+
+    private void showEditMessage(PantryItem pantryItem) {
+        Toast.makeText(
+                this,
+                "Edit selected for: " + pantryItem.getName(),
+                Toast.LENGTH_SHORT
+        ).show();
     }
 
     @Override

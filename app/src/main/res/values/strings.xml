@@ -15,6 +15,7 @@
     <string name="pantry_item_name_preview">Ingredient Name</string>
     <string name="pantry_item_quantity_preview">Quantity: 0 pieces</string>
     <string name="pantry_item_expiry_preview">Expiry: Not provided</string>
+    <string name="edit_ingredient">Edit</string>
     <string name="pantry_load_failed">Could not load pantry items. Please check your connection.</string>
     <string name="ingredient_name_required">Please enter an ingredient name.</string>
     <string name="quantity_required">Please enter a quantity.</string>
