@@ -22,6 +22,14 @@
         android:text="@string/add_ingredient"
         android:textAllCaps="false" />
 
+    <Button
+        android:id="@+id/buttonSuggestedRecipes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/suggested_recipes_button"
+        android:textAllCaps="false" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/pantryRecyclerView"
         android:layout_width="match_parent"
