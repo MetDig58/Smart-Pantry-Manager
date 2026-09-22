@@ -26,9 +26,11 @@
     <string name="quantity_invalid">Quantity must be greater than zero.</string>
     <string name="unit_required">Please enter a unit.</string>
     <string name="suggested_recipes_title">Suggested Recipes</string>
+    <string name="recipe_name_preview">Recipe name</string>
     <string name="no_matching_recipes">No recipes match your pantry yet. Add more ingredients to see suggestions.</string>
     <string name="form_valid_message">The ingredient details are valid.</string>
     <string name="ingredient_saved">Ingredient saved successfully.</string>
     <string name="ingredient_save_failed">Could not save the ingredient. Please try again.</string>
     <string name="expiry_not_provided">Expiry: Not provided</string>
+    <string name="recipe_ingredients_preview">Ingredients: tomato, egg</string>
 </resources>
