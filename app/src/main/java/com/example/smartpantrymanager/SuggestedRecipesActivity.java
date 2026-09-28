@@ -1,5 +1,6 @@
 package com.example.smartpantrymanager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -222,11 +223,17 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
     }
 
     private void openRecipeDetails(Recipe recipe) {
-        Toast.makeText(
-                this,
-                recipe.getName(),
-                Toast.LENGTH_SHORT
-        ).show();
+        Intent intent = new Intent(
+                SuggestedRecipesActivity.this,
+                RecipeDetailActivity.class
+        );
+
+        intent.putExtra(
+                RecipeDetailActivity.EXTRA_RECIPE_ID,
+                recipe.getId()
+        );
+
+        startActivity(intent);
     }
 
     private void showLoadError() {
