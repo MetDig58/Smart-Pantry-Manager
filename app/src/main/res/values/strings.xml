@@ -43,4 +43,5 @@
     <string name="recipe_detail_ingredients_preview">Ingredient list will appear here.</string>
     <string name="recipe_detail_instructions_preview">Preparation instructions will appear here.</string>
     <string name="recipe_detail_load_failed">Could not load this recipe. Please try again.</string>
+    <string name="recipe_detail_missing_id">This recipe could not be identified.</string>
 </resources>
