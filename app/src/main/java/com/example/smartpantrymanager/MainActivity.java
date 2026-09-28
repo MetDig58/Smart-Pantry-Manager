@@ -82,6 +82,17 @@ public class MainActivity extends AppCompatActivity {
 
             startActivity(intent);
         });
+
+        Button settingsButton = findViewById(R.id.buttonSettings);
+
+        settingsButton.setOnClickListener(view -> {
+            Intent intent = new Intent(
+                    MainActivity.this,
+                    SettingsActivity.class
+            );
+
+            startActivity(intent);
+        });
     }
 
     private void listenForPantryItems() {

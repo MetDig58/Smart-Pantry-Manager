@@ -47,4 +47,5 @@
     <string name="settings_title">Settings</string>
     <string name="expiry_alerts_label">Expiry alerts</string>
     <string name="expiry_alerts_description">Show reminders for ingredients that are close to expiry.</string>
+    <string name="settings_button">Settings</string>
 </resources>
