@@ -44,4 +44,7 @@
     <string name="recipe_detail_instructions_preview">Preparation instructions will appear here.</string>
     <string name="recipe_detail_load_failed">Could not load this recipe. Please try again.</string>
     <string name="recipe_detail_missing_id">This recipe could not be identified.</string>
+    <string name="settings_title">Settings</string>
+    <string name="expiry_alerts_label">Expiry alerts</string>
+    <string name="expiry_alerts_description">Show reminders for ingredients that are close to expiry.</string>
 </resources>
