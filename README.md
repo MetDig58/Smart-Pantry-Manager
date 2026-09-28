@@ -172,7 +172,7 @@ The application includes a RecipeSeeder utility class.
 
 When the Suggested Recipes screen is opened, the application checks whether seeded recipes already exist. If no recipes with the current seed version are found, the application creates the initial recipe collection in Firestore.
 
-The seeder creates at least 15 recipes:
+The seeder creates 15 recipes:
 
 - Tomato Omelette
 - Banana Smoothie
@@ -350,6 +350,7 @@ Student: Tyrone McCabe
 Student Number: 402312907
 
 GitHub Repository: https://github.com/MetDig58/Smart-Pantry-Manager
+
 ## Author
 
 Student Name: Tyrone McCabe
