@@ -36,4 +36,10 @@
     <string name="recipe_load_failed">Could not load recipes or pantry items. Please check your connection.</string>
     <string name="suggested_recipes_button">Suggested Recipes</string>
     <string name="recipe_ingredients_preview">Ingredients: tomato, egg</string>
+    <string name="recipe_detail_title">Recipe Details</string>
+    <string name="recipe_detail_ingredients_heading">Ingredients</string>
+    <string name="recipe_detail_instructions_heading">Instructions</string>
+    <string name="recipe_detail_name_preview">Recipe name</string>
+    <string name="recipe_detail_ingredients_preview">Ingredient list will appear here.</string>
+    <string name="recipe_detail_instructions_preview">Preparation instructions will appear here.</string>
 </resources>
