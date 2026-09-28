@@ -172,22 +172,28 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
                 return false;
             }
 
-            Double pantryQuantityInBaseUnit = convertToBaseQuantity(
-                    matchingPantryItem.getQuantity(),
-                    matchingPantryItem.getUnit()
-            );
+            String pantryUnit = normaliseUnit(matchingPantryItem.getUnit());
+            String requiredUnit = normaliseUnit(requiredIngredient.getUnit());
 
-            Double requiredQuantityInBaseUnit = convertToBaseQuantity(
-                    requiredIngredient.getRequiredQuantity(),
-                    requiredIngredient.getUnit()
-            );
-
-            if (pantryQuantityInBaseUnit == null
-                    || requiredQuantityInBaseUnit == null) {
+            if (!unitCategoriesMatch(pantryUnit, requiredUnit)) {
                 return false;
             }
 
-            if (pantryQuantityInBaseUnit < requiredQuantityInBaseUnit) {
+            Double pantryQuantity = convertToBaseQuantity(
+                    matchingPantryItem.getQuantity(),
+                    pantryUnit
+            );
+
+            Double requiredQuantity = convertToBaseQuantity(
+                    requiredIngredient.getRequiredQuantity(),
+                    requiredUnit
+            );
+
+            if (pantryQuantity == null || requiredQuantity == null) {
+                return false;
+            }
+
+            if (pantryQuantity < requiredQuantity) {
                 return false;
             }
         }
@@ -195,27 +201,61 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
         return true;
     }
 
-    private Double convertToBaseQuantity(double quantity, String unit) {
-        String normalisedUnit = normaliseUnit(unit);
-
+    private Double convertToBaseQuantity(double quantity, String normalisedUnit) {
         switch (normalisedUnit) {
             case "piece":
-                return quantity;
-
             case "gram":
+            case "millilitre":
+            case "slice":
+            case "can":
+            case "clove":
+            case "tablespoon":
+            case "teaspoon":
+            case "cup":
                 return quantity;
 
             case "kilogram":
                 return quantity * 1000;
-
-            case "millilitre":
-                return quantity;
 
             case "litre":
                 return quantity * 1000;
 
             default:
                 return null;
+        }
+    }
+
+    private boolean unitCategoriesMatch(
+            String pantryUnit,
+            String requiredUnit
+    ) {
+        return getUnitCategory(pantryUnit)
+                .equals(getUnitCategory(requiredUnit));
+    }
+
+    private String getUnitCategory(String unit) {
+        switch (unit) {
+            case "piece":
+                return "count";
+
+            case "gram":
+            case "kilogram":
+                return "mass";
+
+            case "millilitre":
+            case "litre":
+                return "volume";
+
+            case "slice":
+            case "can":
+            case "clove":
+            case "tablespoon":
+            case "teaspoon":
+            case "cup":
+                return unit;
+
+            default:
+                return "unknown";
         }
     }
 
@@ -258,6 +298,32 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
             case "liter":
             case "liters":
                 return "litre";
+
+            case "slice":
+            case "slices":
+                return "slice";
+
+            case "can":
+            case "cans":
+                return "can";
+
+            case "clove":
+            case "cloves":
+                return "clove";
+
+            case "tablespoon":
+            case "tablespoons":
+            case "tbsp":
+                return "tablespoon";
+
+            case "teaspoon":
+            case "teaspoons":
+            case "tsp":
+                return "teaspoon";
+
+            case "cup":
+            case "cups":
+                return "cup";
 
             default:
                 return normalisedUnit;
