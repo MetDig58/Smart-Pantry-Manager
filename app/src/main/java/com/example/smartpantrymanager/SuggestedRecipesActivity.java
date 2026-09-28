@@ -76,6 +76,8 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
 
         firestore = FirebaseFirestore.getInstance();
 
+        RecipeSeeder.seedIfNeeded(firestore);
+
         listenForPantryItems();
         listenForRecipes();
     }
