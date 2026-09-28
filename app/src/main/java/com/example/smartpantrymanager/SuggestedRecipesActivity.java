@@ -172,13 +172,96 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
                 return false;
             }
 
-            if (matchingPantryItem.getQuantity()
-                    < requiredIngredient.getRequiredQuantity()) {
+            Double pantryQuantityInBaseUnit = convertToBaseQuantity(
+                    matchingPantryItem.getQuantity(),
+                    matchingPantryItem.getUnit()
+            );
+
+            Double requiredQuantityInBaseUnit = convertToBaseQuantity(
+                    requiredIngredient.getRequiredQuantity(),
+                    requiredIngredient.getUnit()
+            );
+
+            if (pantryQuantityInBaseUnit == null
+                    || requiredQuantityInBaseUnit == null) {
+                return false;
+            }
+
+            if (pantryQuantityInBaseUnit < requiredQuantityInBaseUnit) {
                 return false;
             }
         }
 
         return true;
+    }
+
+    private Double convertToBaseQuantity(double quantity, String unit) {
+        String normalisedUnit = normaliseUnit(unit);
+
+        switch (normalisedUnit) {
+            case "piece":
+                return quantity;
+
+            case "gram":
+                return quantity;
+
+            case "kilogram":
+                return quantity * 1000;
+
+            case "millilitre":
+                return quantity;
+
+            case "litre":
+                return quantity * 1000;
+
+            default:
+                return null;
+        }
+    }
+
+    private String normaliseUnit(String unit) {
+        if (unit == null) {
+            return "";
+        }
+
+        String normalisedUnit = unit
+                .trim()
+                .toLowerCase(Locale.ROOT);
+
+        switch (normalisedUnit) {
+            case "piece":
+            case "pieces":
+            case "item":
+            case "items":
+                return "piece";
+
+            case "g":
+            case "gram":
+            case "grams":
+                return "gram";
+
+            case "kg":
+            case "kilogram":
+            case "kilograms":
+                return "kilogram";
+
+            case "ml":
+            case "millilitre":
+            case "millilitres":
+            case "milliliter":
+            case "milliliters":
+                return "millilitre";
+
+            case "l":
+            case "litre":
+            case "litres":
+            case "liter":
+            case "liters":
+                return "litre";
+
+            default:
+                return normalisedUnit;
+        }
     }
 
     private PantryItem findMatchingPantryItem(String ingredientName) {
