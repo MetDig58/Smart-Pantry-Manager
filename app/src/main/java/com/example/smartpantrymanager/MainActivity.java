@@ -70,31 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
         firestore = FirebaseFirestore.getInstance();
         listenForPantryItems();
-
-        Button suggestedRecipesButton = findViewById(
-                R.id.buttonSuggestedRecipes
-        );
-
-        suggestedRecipesButton.setOnClickListener(view -> {
-            Intent intent = new Intent(
-                    MainActivity.this,
-                    SuggestedRecipesActivity.class
-            );
-
-            startActivity(intent);
-        });
-
-        Button settingsButton = findViewById(R.id.buttonSettings);
-
-        settingsButton.setOnClickListener(view -> {
-            Intent intent = new Intent(
-                    MainActivity.this,
-                    SettingsActivity.class
-            );
-
-            startActivity(intent);
-        });
-
+        
         BottomNavigationView bottomNavigationView =
                 findViewById(R.id.bottomNavigationView);
 
