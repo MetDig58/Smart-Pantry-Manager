@@ -31,8 +31,15 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
     private final List<Recipe> recipes = new ArrayList<>();
 
     private RecipeAdapter recipeAdapter;
+    private RecipeAdapter almostThereRecipeAdapter;
+
     private RecyclerView recipeRecyclerView;
+    private RecyclerView almostThereRecipeRecyclerView;
+
     private TextView noMatchingRecipesText;
+    private TextView almostThereTitleText;
+    private TextView almostThereDescriptionText;
+    private TextView noAlmostThereRecipesText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,18 +68,48 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
         recipeRecyclerView = findViewById(
                 R.id.suggestedRecipesRecyclerView
         );
+
+        almostThereRecipeRecyclerView = findViewById(
+                R.id.almostThereRecipesRecyclerView
+        );
+
         noMatchingRecipesText = findViewById(
                 R.id.textNoMatchingRecipes
+        );
+
+        almostThereTitleText = findViewById(
+                R.id.textAlmostThereTitle
+        );
+
+        almostThereDescriptionText = findViewById(
+                R.id.textAlmostThereDescription
+        );
+
+        noAlmostThereRecipesText = findViewById(
+                R.id.textNoAlmostThereRecipes
         );
 
         recipeAdapter = new RecipeAdapter(
                 this::openRecipeDetails
         );
 
+        almostThereRecipeAdapter = new RecipeAdapter(
+                this::openRecipeDetails
+        );
+
         recipeRecyclerView.setLayoutManager(
                 new LinearLayoutManager(this)
         );
+
         recipeRecyclerView.setAdapter(recipeAdapter);
+
+        almostThereRecipeRecyclerView.setLayoutManager(
+                new LinearLayoutManager(this)
+        );
+
+        almostThereRecipeRecyclerView.setAdapter(
+                almostThereRecipeAdapter
+        );
 
         firestore = FirebaseFirestore.getInstance();
 
@@ -143,15 +180,29 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
 
     private void updateSuggestions() {
         List<Recipe> matchingRecipes = new ArrayList<>();
+        List<Recipe> almostThereRecipes = new ArrayList<>();
 
         for (Recipe recipe : recipes) {
-            if (canMakeRecipe(recipe)) {
+            int unavailableIngredientCount =
+                    countUnavailableIngredients(recipe);
+
+            if (unavailableIngredientCount == 0) {
                 matchingRecipes.add(recipe);
+            } else if (unavailableIngredientCount == 1) {
+                almostThereRecipes.add(recipe);
             }
         }
 
         recipeAdapter.setRecipes(matchingRecipes);
+        almostThereRecipeAdapter.setRecipes(almostThereRecipes);
 
+        updateMatchingRecipesDisplay(matchingRecipes);
+        updateAlmostThereDisplay(almostThereRecipes);
+    }
+
+    private void updateMatchingRecipesDisplay(
+            List<Recipe> matchingRecipes
+    ) {
         boolean hasMatches = !matchingRecipes.isEmpty();
 
         if (hasMatches) {
@@ -163,45 +214,93 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
         }
     }
 
+    private void updateAlmostThereDisplay(
+            List<Recipe> almostThereRecipes
+    ) {
+        boolean hasAlmostThereRecipes =
+                !almostThereRecipes.isEmpty();
+
+        almostThereTitleText.setVisibility(View.VISIBLE);
+        almostThereDescriptionText.setVisibility(View.VISIBLE);
+
+        if (hasAlmostThereRecipes) {
+            almostThereRecipeRecyclerView.setVisibility(View.VISIBLE);
+            noAlmostThereRecipesText.setVisibility(View.GONE);
+        } else {
+            almostThereRecipeRecyclerView.setVisibility(View.GONE);
+            noAlmostThereRecipesText.setVisibility(View.VISIBLE);
+        }
+    }
+
     private boolean canMakeRecipe(Recipe recipe) {
-        for (RecipeIngredient requiredIngredient : recipe.getIngredients()) {
-            PantryItem matchingPantryItem =
-                    findMatchingPantryItem(requiredIngredient.getName());
+        return countUnavailableIngredients(recipe) == 0;
+    }
 
-            if (matchingPantryItem == null) {
-                return false;
-            }
+    private int countUnavailableIngredients(Recipe recipe) {
+        if (recipe == null || recipe.getIngredients() == null) {
+            return 1;
+        }
 
-            String pantryUnit = normaliseUnit(matchingPantryItem.getUnit());
-            String requiredUnit = normaliseUnit(requiredIngredient.getUnit());
+        int unavailableIngredientCount = 0;
 
-            if (!unitCategoriesMatch(pantryUnit, requiredUnit)) {
-                return false;
-            }
+        for (RecipeIngredient requiredIngredient :
+                recipe.getIngredients()) {
 
-            Double pantryQuantity = convertToBaseQuantity(
-                    matchingPantryItem.getQuantity(),
-                    pantryUnit
-            );
-
-            Double requiredQuantity = convertToBaseQuantity(
-                    requiredIngredient.getRequiredQuantity(),
-                    requiredUnit
-            );
-
-            if (pantryQuantity == null || requiredQuantity == null) {
-                return false;
-            }
-
-            if (pantryQuantity < requiredQuantity) {
-                return false;
+            if (!isIngredientAvailable(requiredIngredient)) {
+                unavailableIngredientCount++;
             }
         }
 
-        return true;
+        return unavailableIngredientCount;
     }
 
-    private Double convertToBaseQuantity(double quantity, String normalisedUnit) {
+    private boolean isIngredientAvailable(
+            RecipeIngredient requiredIngredient
+    ) {
+        if (requiredIngredient == null) {
+            return false;
+        }
+
+        PantryItem matchingPantryItem =
+                findMatchingPantryItem(requiredIngredient.getName());
+
+        if (matchingPantryItem == null) {
+            return false;
+        }
+
+        String pantryUnit = normaliseUnit(
+                matchingPantryItem.getUnit()
+        );
+
+        String requiredUnit = normaliseUnit(
+                requiredIngredient.getUnit()
+        );
+
+        if (!unitCategoriesMatch(pantryUnit, requiredUnit)) {
+            return false;
+        }
+
+        Double pantryQuantity = convertToBaseQuantity(
+                matchingPantryItem.getQuantity(),
+                pantryUnit
+        );
+
+        Double requiredQuantity = convertToBaseQuantity(
+                requiredIngredient.getRequiredQuantity(),
+                requiredUnit
+        );
+
+        if (pantryQuantity == null || requiredQuantity == null) {
+            return false;
+        }
+
+        return pantryQuantity >= requiredQuantity;
+    }
+
+    private Double convertToBaseQuantity(
+            double quantity,
+            String normalisedUnit
+    ) {
         switch (normalisedUnit) {
             case "piece":
             case "gram":
@@ -330,7 +429,9 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
         }
     }
 
-    private PantryItem findMatchingPantryItem(String ingredientName) {
+    private PantryItem findMatchingPantryItem(
+            String ingredientName
+    ) {
         String normalisedRecipeName =
                 normaliseIngredientName(ingredientName);
 

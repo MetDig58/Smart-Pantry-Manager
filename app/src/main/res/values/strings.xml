@@ -35,6 +35,10 @@
     <string name="navigation_pantry">Pantry</string>
     <string name="navigation_recipes">Recipes</string>
     <string name="navigation_settings">Settings</string>
+    <string name="suggested_recipes_description">Recipes you can make with your current pantry items.</string>
+    <string name="almost_there_title">Almost There</string>
+    <string name="almost_there_description">Recipes missing only one ingredient.</string>
+    <string name="no_almost_there_recipes">No almost-there recipes found.</string>
     <string name="recipe_ingredients_format">Ingredients: %1$s</string>
     <string name="recipe_load_failed">Could not load recipes or pantry items. Please check your connection.</string>
     <string name="suggested_recipes_button">Suggested Recipes</string>

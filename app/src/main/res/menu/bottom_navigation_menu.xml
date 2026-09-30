@@ -3,14 +3,17 @@
 
     <item
         android:id="@+id/navigation_pantry"
+        android:icon="@drawable/baseline_kitchen_24"
         android:title="@string/navigation_pantry" />
 
     <item
         android:id="@+id/navigation_recipes"
+        android:icon="@drawable/ic_recipes"
         android:title="@string/navigation_recipes" />
 
     <item
         android:id="@+id/navigation_settings"
+        android:icon="@drawable/baseline_settings_24"
         android:title="@string/navigation_settings" />
 
 </menu>

@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
         firestore = FirebaseFirestore.getInstance();
         listenForPantryItems();
-        
+
         BottomNavigationView bottomNavigationView =
                 findViewById(R.id.bottomNavigationView);
 
