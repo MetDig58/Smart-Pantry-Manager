@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -93,6 +94,39 @@ public class MainActivity extends AppCompatActivity {
 
             startActivity(intent);
         });
+
+        BottomNavigationView bottomNavigationView =
+                findViewById(R.id.bottomNavigationView);
+
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+
+            if (itemId == R.id.navigation_pantry) {
+                return true;
+            }
+
+            if (itemId == R.id.navigation_recipes) {
+                Intent intent = new Intent(
+                        MainActivity.this,
+                        SuggestedRecipesActivity.class
+                );
+                startActivity(intent);
+                return true;
+            }
+
+            if (itemId == R.id.navigation_settings) {
+                Intent intent = new Intent(
+                        MainActivity.this,
+                        SettingsActivity.class
+                );
+                startActivity(intent);
+                return true;
+            }
+
+            return false;
+        });
+
+        bottomNavigationView.setSelectedItemId(R.id.navigation_pantry);
     }
 
     private void listenForPantryItems() {
